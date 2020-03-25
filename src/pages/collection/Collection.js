@@ -5,16 +5,16 @@ import { connect } from "react-redux";
 // import {} from "../../redux/shop/shopSelectors"
 // import CollectionItem from "../../components/collectionItem/CollectionItem";
 
-import "./category.styles.scss";
+import "./collection.styles.scss";
 
-const Category = ({ match }) => {
+const Collection = ({ match }) => {
   return (
     <div className='category'>
-      <h2>Category page</h2>
+      <h2>Collection {match.params.collectionId} page</h2>
     </div>
   );
 };
 
 // const mapStateToProps = createStructuredSelector({});
 
-export default connect()(Category);
+export default connect()(Collection);
