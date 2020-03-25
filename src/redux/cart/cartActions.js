@@ -7,3 +7,7 @@ export const toggleCartDropdown = () => {
 export const addItem = item => {
   return { type: CartActionType.ADD_ITEM, payload: item };
 };
+
+export const clearItem = item => {
+  return { type: CartActionType.CLEAR_ITEM, payload: item };
+};
