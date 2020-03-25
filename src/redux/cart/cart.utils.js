@@ -5,3 +5,12 @@ export const addItemToCart = (cartItems, itemToAdd) => {
   }
   return [...cartItems, { ...itemToAdd, quantity: 1 }];
 };
+
+export const removeItemFromCart = (cartItems, itemToRemove) => {
+  const existingCartItem = cartItems.find(item => item.id === itemToRemove.id);
+  if (!existingCartItem) return;
+  if (existingCartItem.quantity === 1) {
+    return cartItems.filter(item => item.id !== existingCartItem.id);
+  }
+  return cartItems.map(item => (item.id === existingCartItem.id ? { ...item, quantity: item.quantity - 1 } : item));
+};
