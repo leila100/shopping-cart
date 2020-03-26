@@ -7,11 +7,15 @@ import CollectionItem from "../../components/collectionItem/CollectionItem";
 import "./collection.styles.scss";
 
 const Collection = ({ match, collection }) => {
+  const { title, items } = collection;
   return (
     <div className='collection-page'>
-      {collection.items.map(item => (
-        <CollectionItem key={item.id} item={item} />
-      ))}
+      <h2 className='title'>{title}</h2>
+      <div className='items'>
+        {items.map(item => (
+          <CollectionItem key={item.id} item={item} />
+        ))}
+      </div>
     </div>
   );
 };
