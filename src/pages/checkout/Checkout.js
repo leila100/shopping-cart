@@ -5,42 +5,41 @@ import { createStructuredSelector } from "reselect";
 import { selectCartItems, selectCartTotal } from "../../redux/cart/cartSelectors";
 import CheckoutItem from "../../components/checkoutItem/CheckoutItem";
 import StripeButton from "../../components/stripeButton/StripeButton";
-
-import "./checkout.styles.scss";
+import { CheckoutContainer, Header, HeaderBlock, Total, TestWarning } from "./checkout.styles";
 
 const Checkout = ({ cartItems, cartTotal }) => {
   return (
-    <div className='checkout-page'>
-      <div className='checkout-header'>
-        <div className='header-block'>
+    <CheckoutContainer>
+      <Header>
+        <HeaderBlock>
           <span>Product</span>
-        </div>
-        <div className='header-block'>
+        </HeaderBlock>
+        <HeaderBlock>
           <span>Description</span>
-        </div>
-        <div className='header-block'>
+        </HeaderBlock>
+        <HeaderBlock>
           <span>Quantity</span>
-        </div>
-        <div className='header-block'>
+        </HeaderBlock>
+        <HeaderBlock>
           <span>Price</span>
-        </div>
-        <div className='header-block'>
+        </HeaderBlock>
+        <HeaderBlock>
           <span>Remove</span>
-        </div>
-      </div>
+        </HeaderBlock>
+      </Header>
       {cartItems.map(item => (
         <CheckoutItem key={item.id} cartItem={item} />
       ))}
-      <div className='total'>
+      <Total>
         <span>Total: ${cartTotal}</span>
-      </div>
-      <div className='test-warning'>
+      </Total>
+      <TestWarning>
         *Please use the following test credit cart for payments*
         <br />
         4242 4242 4242 4242 - Exp: any date in future - CVV: 123
-      </div>
+      </TestWarning>
       <StripeButton price={cartTotal} />
-    </div>
+    </CheckoutContainer>
   );
 };
 
