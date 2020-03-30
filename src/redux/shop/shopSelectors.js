@@ -15,3 +15,5 @@ export const selectCollection = collectionUrlParam => {
 export const selectIsFetching = createSelector([selectShop], shop => shop.isFetching);
 
 export const selectErrorMessage = createSelector([selectShop], shop => shop.errorMessage);
+
+export const selectIsCollectionsLoaded = createSelector([selectShop], shop => !!shop.collections);
