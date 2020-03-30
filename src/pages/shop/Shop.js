@@ -1,9 +1,10 @@
 import React from "react";
 import { Route } from "react-router-dom";
+import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 
-import { firestore, convertCollectionSnapshotToMap } from "../../firebase/firebase.utils";
-import { updateCollections } from "../../redux/shop/shopActions";
+import { fetchCollectionsAsync } from "../../redux/shop/shopActions";
+import { selectIsFetching, selectErrorMessage } from "../../redux/shop/shopSelectors";
 
 import WithSpinner from "../../components/withSpinner/WithSpinner";
 import CollectionsOverview from "../../components/collectionsOverview/CollectionsOverview";
@@ -13,24 +14,12 @@ const CollectionWithSpinner = WithSpinner(Collection);
 const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
 
 class Shop extends React.Component {
-  state = {
-    isLoading: true
-  };
-
-  unsubscribeFromSnapshot = null;
-
   componentDidMount() {
-    const collectionRef = firestore.collection("collections");
-    collectionRef.onSnapshot(async snapshot => {
-      const collectionsMap = convertCollectionSnapshotToMap(snapshot);
-      this.props.updateCollections(collectionsMap);
-      this.setState({ isLoading: false });
-    });
+    this.props.fetchCollectionsAsync();
   }
 
   render() {
-    const { match } = this.props;
-    const { isLoading } = this.state;
+    const { match, isLoading } = this.props;
     return (
       <div>
         <Route
@@ -47,10 +36,15 @@ class Shop extends React.Component {
   }
 }
 
+const mapStateToProps = createStructuredSelector({
+  isLoading: selectIsFetching,
+  errorMessage: selectErrorMessage
+});
+
 const mapDispatchToProps = dispatch => {
   return {
-    updateCollections: collections => dispatch(updateCollections(collections))
+    fetchCollectionsAsync: () => dispatch(fetchCollectionsAsync())
   };
 };
 
-export default connect(null, mapDispatchToProps)(Shop);
+export default connect(mapStateToProps, mapDispatchToProps)(Shop);
