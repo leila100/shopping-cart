@@ -6,12 +6,12 @@ import { connect } from "react-redux";
 import { fetchCollectionsAsync } from "../../redux/shop/shopActions";
 import { selectIsFetching, selectIsCollectionsLoaded } from "../../redux/shop/shopSelectors";
 
+import CollectionOverviewContainer from "../../components/collectionsOverview/CollectionsOverviewContainer";
+
 import WithSpinner from "../../components/withSpinner/WithSpinner";
-import CollectionsOverview from "../../components/collectionsOverview/CollectionsOverview";
 import Collection from "../collection/Collection";
 
 const CollectionWithSpinner = WithSpinner(Collection);
-const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
 
 class Shop extends React.Component {
   componentDidMount() {
@@ -22,11 +22,7 @@ class Shop extends React.Component {
     const { match, isCollectionLoaded } = this.props;
     return (
       <div>
-        <Route
-          exact
-          path={match.path}
-          render={props => <CollectionsOverviewWithSpinner isLoading={!isCollectionLoaded} {...props} />}
-        />
+        <Route exact path={match.path} component={CollectionOverviewContainer} />
         <Route
           path={`${match.path}/:collectionId`}
           render={props => <CollectionWithSpinner isLoading={!isCollectionLoaded} {...props} />}
