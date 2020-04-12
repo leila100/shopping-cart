@@ -6,11 +6,11 @@ export const fetchCollectionsStart = () => {
   return { type: shopActionsType.FETCH_COLLECTIONS_START };
 };
 
-const fetchCollectionsSuccess = (collections) => {
+export const fetchCollectionsSuccess = (collections) => {
   return { type: shopActionsType.FETCH_COLLECTIONS_SUCCESS, payload: collections };
 };
 
-const fetchCollectionsFail = (errorMessage) => {
+export const fetchCollectionsFail = (errorMessage) => {
   return { type: shopActionsType.FETCH_COLLECTIONS_FAIL, payload: errorMessage };
 };
 
