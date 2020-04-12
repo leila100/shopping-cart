@@ -19,20 +19,20 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    const { setCurrentUser } = this.props;
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-        userRef.onSnapshot(snapshot => {
-          setCurrentUser({
-            id: snapshot.id,
-            ...snapshot.data()
-          });
-        });
-      } else {
-        setCurrentUser(userAuth);
-      }
-    });
+    // const { setCurrentUser } = this.props;
+    // this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+    //   if (userAuth) {
+    //     const userRef = await createUserProfileDocument(userAuth);
+    //     userRef.onSnapshot(snapshot => {
+    //       setCurrentUser({
+    //         id: snapshot.id,
+    //         ...snapshot.data()
+    //       });
+    //     });
+    //   } else {
+    //     setCurrentUser(userAuth);
+    //   }
+    // });
   }
 
   componentWillUnmount() {
@@ -48,7 +48,7 @@ class App extends React.Component {
           <Route exact path='/' component={Homepage} />
           <Route path='/shop' component={Shop} />
           <Route exact path='/checkout' component={Checkout} />
-          <Route exact path='/signin' render={props => (currentUser ? <Redirect to='/' /> : <SignInSignUp />)} />
+          <Route exact path='/signin' render={(props) => (currentUser ? <Redirect to='/' /> : <SignInSignUp />)} />
         </Switch>
       </div>
     );
@@ -56,12 +56,12 @@ class App extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setCurrentUser: user => dispatch(setCurrentUser(user))
+    setCurrentUser: (user) => dispatch(setCurrentUser(user)),
   };
 };
 
