@@ -2,16 +2,41 @@ import { takeLatest, put, all, call } from "redux-saga/effects";
 
 import UserActionTypes from "./userTypes";
 import { auth, googleProvider, createUserProfileDocument, getCurrentUser } from "../../firebase/firebase.utils";
-import { signInSuccess, signInFail, signOutSuccess, signOutFail } from "./userActions";
+import { signInSuccess, signInFail, signOutSuccess, signOutFail, signUpSuccess, signUpFail } from "./userActions";
 
-export function* getSnapshotFromUserAuth(userAuth) {
+export function* getSnapshotFromUserAuth(userAuth, additionalData) {
   try {
-    const userRef = yield call(createUserProfileDocument, userAuth);
+    const userRef = yield call(createUserProfileDocument, userAuth, additionalData);
     const userSnapshot = yield userRef.get();
     yield put(signInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
   } catch (error) {
     yield put(signInFail(error));
   }
+}
+
+export function* signUp({ payload: { email, password, displayName } }) {
+  try {
+    const { user } = yield auth.createUserWithEmailAndPassword(email, password);
+    yield put(signUpSuccess({ user, additionalData: { displayName } }));
+  } catch (error) {
+    yield put(signUpFail);
+  }
+}
+
+export function* onSignUpStart() {
+  yield takeLatest(UserActionTypes.SIGN_UP_START, signUp);
+}
+
+export function* signInAfterSignUp({ payload: { user, additionalData } }) {
+  try {
+    yield getSnapshotFromUserAuth(user, additionalData);
+  } catch (error) {
+    yield put(signUpFail);
+  }
+}
+
+export function* onSignUpSuccess() {
+  yield takeLatest(UserActionTypes.SIGN_UP_SUCCESS, signInAfterSignUp);
 }
 
 export function* signInWithGoogle() {
@@ -68,5 +93,12 @@ export function* onSignOut() {
 }
 
 export function* userSagas() {
-  yield all([call(onGoggleSignInStart), call(onEmailSignInStart), call(onCheckUserSession), call(onSignOut)]);
+  yield all([
+    call(onSignUpStart),
+    call(onSignUpSuccess),
+    call(onGoggleSignInStart),
+    call(onEmailSignInStart),
+    call(onCheckUserSession),
+    call(onSignOut),
+  ]);
 }
