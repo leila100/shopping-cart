@@ -15,3 +15,7 @@ export const signInFail = (error) => {
 export const emailSignInStart = (emailAndPassword) => {
   return { type: UserActionTypes.EMAIL_SIGN_IN_START, payload: emailAndPassword };
 };
+
+export const checkUserSession = () => {
+  return { type: UserActionTypes.CHECK_USER_SESSION };
+};
