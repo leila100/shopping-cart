@@ -3,6 +3,8 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
+import { GlobalStyle } from "./global.styles";
+
 import { selectCurrentUser } from "./redux/user/userSelectors";
 import { checkUserSession } from "./redux/user/userActions";
 
@@ -12,8 +14,6 @@ import Homepage from "./pages/homepage/Homepage.js";
 import Shop from "./pages/shop/Shop";
 import Checkout from "./pages/checkout/Checkout";
 
-import "./app.css";
-
 const App = ({ checkUserSession, currentUser }) => {
   useEffect(() => {
     checkUserSession();
@@ -21,6 +21,7 @@ const App = ({ checkUserSession, currentUser }) => {
 
   return (
     <div>
+      <GlobalStyle />
       <Header />
       <Switch>
         <Route exact path='/' component={Homepage} />
